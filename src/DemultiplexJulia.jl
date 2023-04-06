@@ -14,16 +14,12 @@ function BBCSemiglobalAlignmentScore(ref,query,maximum_errorrate)
     q=length(query)
     
     #Bioalignments
-    problem = SemiGlobalAlignment()
     scoremodel = AffineGapScoreModel(match=0,mismatch=-1,gap_open=0,gap_extend=-1)
     result=pairalign(problem, query, ref, scoremodel)
     alignment_result = alignment(result)
-    alignregion_start = seq2ref(alignment_result,1)[1]
-    alignregion_end = seq2ref(alignment_result,q)[1]
-    insertion_of_all = abs(BioAlignments.score(result))-count_mismatches(alignment_result)
-    difference_of_refandquery = alignregion_end-q-alignregion_start+1
-    length_of_alignregion = q+(difference_of_refandquery + insertion_of_all)/2
-    errorrate = (length_of_alignregion - count_matches(alignment_result)) / q
+    indel = - BioAlignments.score(result)-count_mismatches(alignment_result)
+    errorrate = - BioAlignments.score(result) / length(query)
+    deletions = indel - count_insertions(alignment_result)
     score = count_matches(alignment_result)-count_mismatches(alignment_result)-2*count_insertions(alignment_result)
     if errorrate > maximum_errorrate
         score = 0
