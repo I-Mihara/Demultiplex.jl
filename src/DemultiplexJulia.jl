@@ -9,10 +9,17 @@ Demultiplexer
 #include("")
 using BioAlignments , CSV , DataFrames#使う関数だけusingする？
 
-function BBCSemiglobalAlignmentScore(ref,query,maximum_errorrate)
+"""
+    BBCSemiglobalAlignmentScore(ref::String,query::String,maximum_errorrate=0.22::Float64) -> score::Int64 
+Calculate the semiglobal alignment score between a reference sequence and a query sequence
+using the Bioalignments.jl package and return score based on the number of mach, mismach and insertion.
+If the error rate between the aligned seqences is greater than the maximum allowed error rate,
+the function returns a score of 0.
+"""
+function BBCSemiglobalAlignmentScore(ref::String,query::String,maximum_errorrate=0.22::Float64)
     problem = SemiGlobalAlignment()
     scoremodel = AffineGapScoreModel(match=0,mismatch=-1,gap_open=0,gap_extend=-1)
-    result=pairalign(problem, query, ref, scoremodel)
+    result=Bioalignments.pairalign(problem, query, ref, scoremodel)
     alignment_result = alignment(result)
     errorrate = - BioAlignments.score(result) / length(query)
     score = count_matches(alignment_result)-count_mismatches(alignment_result)-2*count_insertions(alignment_result)
@@ -22,7 +29,11 @@ function BBCSemiglobalAlignmentScore(ref,query,maximum_errorrate)
     return score
 end
 
-function Demultiplexer(input,input2,bbc_tsv,output_dir,maximum_errorrate=0.22)
+"""
+    function Demultiplexer(input::String,input2::String,bbc_tsv::String,output_dir::String,maximum_errorrate=0.22::Float64)
+Demultiplex reads based on barcode sequences, with the option to set a maximum error rate for matching.
+"""
+function Demultiplexer(input::String,input2::String,bbc_tsv::String,output_dir::String,maximum_errorrate=0.22::Float64)
     if isdir(output_dir)
         rm(output_dir,recursive=true) 
     end
