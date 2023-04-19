@@ -74,10 +74,10 @@ end
 
 @testset "DemultiplexJulia.jl" begin
     @testset "Demultiplexer tests" begin
-        @testset "test_Demultiplexer" test_Demultiplexer()
+        test_Demultiplexer()
     end
     
     @testset "BBCSemiglobalAlignmentScore tests" begin
-        @testset "test_BBCSemiglobalAlignmentScore" test_BBCSemiglobalAlignmentScore()
+        test_BBCSemiglobalAlignmentScore()
     end
 end
