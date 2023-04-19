@@ -4,7 +4,7 @@ using Test
 
 function test_Demultiplexer()
     # Test inputs
-    tmpdir = mktempdir(cleanup=true)
+    tmpdir = mktempdir()
 
     input = joinpath(tmpdir,"test_input.fastq")
     input2 = joinpath(tmpdir,"test_input2.fastq")
@@ -13,7 +13,7 @@ function test_Demultiplexer()
 
     open(input, "w") do io
         println(io, "@example_read1")
-        println(io, "AATTATATGCCGCCATATT")
+        println(io, "AATTATATGGGGGGATATT")
         println(io, "+")
         println(io, rand('A':'J', 19))
     end
@@ -25,18 +25,19 @@ function test_Demultiplexer()
         println(io, rand('A':'J', 4))
     end
     
-    io = open(filename, "w")
+    io = open(bbc_tsv, "w")
     data = [
     ["ID","Number","Full_seq","Full_annotation"],
-    ["sample_1", 1, "AAAGGGGGAAA", "LLLBBBBB333"],
-    ["sample_2", 2, "AAAAGCCGCCAAA","LLLLBBBBBB333"],
-    ["sample_3", 3, "AAAGGCGGCAA","LLLBBBBBB33"]
+    ["sample_1", 1, "AAAGGGGGGAAA", "LLLBBBBBB333"],
+    ["sample_2", 2, "AAACCCCCCAAA","LLLBBBBBB333"],
+    ["sample_3", 3, "AAAGGCGGCAAA","LLLBBBBBB333"]
     ]
     for row in data
         row_str = join(string.(row), "\t")
         println(io, row_str)
     end
     close(io)
+
     # Run function
     Demultiplexer(input, input2, bbc_tsv, output_dir, 0.22)
     

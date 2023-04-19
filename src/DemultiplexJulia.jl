@@ -19,7 +19,7 @@ the function returns a score of 0.
 function BBCSemiglobalAlignmentScore(ref::String,query::String,maximum_errorrate=0.22::Float64)
     problem = SemiGlobalAlignment()
     scoremodel = AffineGapScoreModel(match=0,mismatch=-1,gap_open=0,gap_extend=-1)
-    result=Bioalignments.pairalign(problem, query, ref, scoremodel)
+    result=pairalign(problem, query, ref, scoremodel)
     alignment_result = alignment(result)
     errorrate = - BioAlignments.score(result) / length(query)
     score = count_matches(alignment_result)-count_mismatches(alignment_result)-2*count_insertions(alignment_result)
