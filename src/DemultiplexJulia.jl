@@ -4,10 +4,7 @@ export
 BBCSemiglobalAlignmentScore,
 Demultiplexer
 
-
-#include("/home/ec2-user/BioAlignment/src/BioAlignments.jl")
-#include("")
-using BioAlignments , CSV , DataFrames#使う関数だけusingする？
+using BioAlignments , CSV , DataFrames
 
 """
     BBCSemiglobalAlignmentScore(ref::String,query::String,maximum_errorrate=0.22::Float64) -> score::Int64 
@@ -64,7 +61,6 @@ function Demultiplexer(input::String,input2::String,bbc_tsv::String,output_dir::
                     mode = "header"
                 elseif mode == "header"
                     k+=1
-                    #seq = line[21:length(line)]
                     seq = line
                     mode = "line3"
                     maximum_bbc_score=0
