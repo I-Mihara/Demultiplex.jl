@@ -1,15 +1,15 @@
-# DemultiplexJulia
-DemultiplexJulia is a Julia package that provides functions for demultiplexing reads based on barcodes. The package includes two functions: "Demultiplex" and "BBCSemiglobalAlignmentScore".
+# Demultiplex
+Demultiplex is a Julia package that provides functions for demultiplexing reads based on barcodes. The package includes two functions: "Demultiplex" and "BBCSemiglobalAlignmentScore".
 ## Installation
-To install the DemultiplexJulia package, open the Julia REPL and run the following command:
+To install the Demultiplex package, open the Julia REPL and run the following command:
 ```Julia
-using Pkg;Pkg.add("DemultiplexJulia")
+using Pkg;Pkg.add("Demultiplex")
 ```
 ## Functions
-### Demultiplex
-The "Demultiplex" function takes four input arguments:"input","input2","bbc_tsv",and"output_dir",and an optional fifth argument "maximum_errorrate". The function reads fastq files, compares the barcode sequences to a reference file, and outputs files containing the reads that match the reference barcodes.
+### demultiplex
+The "demultiplex" function takes four input arguments:"input","input2","bbc_tsv",and"output_dir",and an optional fifth argument "maximum_errorrate". The function reads fastq files, compares the barcode sequences to a reference file, and outputs files containing the reads that match the reference barcodes.
 ```julia
-function Demultiplex(input::String,input2::String,bbc_tsv::String,output_dir::String,maximum_errorrate=0.22::Float64)
+function demultiplex(input::String,input2::String,bbc_tsv::String,output_dir::String,maximum_errorrate=0.22::Float64)
 ```
 
 #### Arguments
@@ -31,9 +31,9 @@ function BBCSemiglobalAlignmentScore(ref::String,query::String,maximum_errorrate
 * `maximum_errorrate`: the maximum allowed rate for barcode matching.
 
 ## Usage
-Here is an example of how to use the "Demultiplex" function
+Here is an example of how to use the "demultiplex" function
 ```julia
-using DemultiplexJulia
+using Demultiplex
 
 input = "path/to/input.fastq"
 input2 = "path/to/input2.fastq"
@@ -41,7 +41,7 @@ bbc_tsv = "path/to/barcodes.tsv"
 output_dir = "path/to/output/directory"
 maximum_errorrate = 0.2
 
-Demultiplex(input, input2, bbc_tsv, output_dir, maximum_errorrate)
+demultiplex(input, input2, bbc_tsv, output_dir, maximum_errorrate)
 ```
 ## License
 This package is licensed under the MIT License.
