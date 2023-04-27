@@ -1,5 +1,5 @@
 # Demultiplex
-Demultiplex is a Julia package that provides functions for demultiplexing reads based on barcodes. The package includes two functions: "Demultiplex" and "BBCSemiglobalAlignmentScore".
+Demultiplex is a Julia package that provides functions for demultiplexing reads based on barcodes. The package includes two functions: "demultiplex" and "BBCSemiglobalAlignmentScore".
 ## Installation
 To install the Demultiplex package, open the Julia REPL and run the following command:
 ```Julia
