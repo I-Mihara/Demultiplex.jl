@@ -1,7 +1,7 @@
 name = "Demultiplex"
 uuid = "65c8ffb1-ee6d-406d-bfb3-dd2ddae09be4"
 authors = ["I.Mihara <issei.mihara@xforestx.com> and contributors"]
-version = "1.0.0"
+version = "1.0.1"
 
 [deps]
 BioAlignments = "00701ae9-d1dc-5365-b64a-a3a3ebf5695e"
