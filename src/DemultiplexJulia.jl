@@ -1,8 +1,8 @@
-module DemultiplexJulia
+module Demultiplex
 
 export
     BBCSemiglobalAlignmentScore,
-    Demultiplex
+    demultiplex
 
 using BioAlignments, CSV, DataFrames
 
@@ -27,10 +27,10 @@ function BBCSemiglobalAlignmentScore(ref::String, query::String, maximum_errorra
 end
 
 """
-    function Demultiplex(input::String,input2::String,bbc_tsv::String,output_dir::String,maximum_errorrate=0.22::Float64)
+    function demultiplex(input::String,input2::String,bbc_tsv::String,output_dir::String,maximum_errorrate=0.22::Float64)
 Demultiplex reads based on barcode sequences, with the option to set a maximum error rate for matching.
 """
-function Demultiplex(input::String, input2::String, bbc_tsv::String, output_dir::String, maximum_errorrate=0.22::Float64)
+function demultiplex(input::String, input2::String, bbc_tsv::String, output_dir::String, maximum_errorrate=0.22::Float64)
     if isdir(output_dir)
         rm(output_dir, recursive=true)
     end
