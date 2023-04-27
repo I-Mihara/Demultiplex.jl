@@ -7,7 +7,7 @@ using Pkg;Pkg.add("Demultiplex")
 ```
 ## Functions
 ### demultiplex
-The "demultiplex" function takes four input arguments:"input","input2","bbc_tsv",and"output_dir",and an optional fifth argument "maximum_errorrate". The function reads fastq files, compares the barcode sequences to a reference file, and outputs files containing the reads that match the reference barcodes.
+The "demultiplex" function takes four input arguments: "input", "input2", "bbc_tsv", and "output_dir", and an optional fifth argument "maximum_errorrate". The function reads fastq files, compares the barcode sequences to a reference file, and outputs files containing the reads that match the reference barcodes.
 ```julia
 function demultiplex(input::String,input2::String,bbc_tsv::String,output_dir::String,maximum_errorrate=0.22::Float64)
 ```
