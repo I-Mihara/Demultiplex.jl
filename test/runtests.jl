@@ -1,8 +1,8 @@
-using DemultiplexJulia
+using Demultiplex
 using Test
 
 
-function test_Demultiplex()
+function test_demultiplex()
     # Test inputs
     tmpdir = mktempdir()
 
@@ -47,7 +47,7 @@ function test_Demultiplex()
     close(io)
 
     # Run function
-    Demultiplex(input, input2, bbc_tsv, output_dir, 0.22)
+    demultiplex(input, input2, bbc_tsv, output_dir, 0.22)
 
     # Test outputsq
     @test isdir(output_dir)
@@ -92,9 +92,9 @@ function test_BBCSemiglobalAlignmentScore()
     @test score == 19
 end
 
-@testset "DemultiplexJulia.jl" begin
-    @testset "Demultiplex tests" begin
-        test_Demultiplex()
+@testset "Demultiplex.jl" begin
+    @testset "demultiplex tests" begin
+        test_demultiplex()
     end
 
     @testset "BBCSemiglobalAlignmentScore tests" begin
