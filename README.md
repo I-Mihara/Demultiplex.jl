@@ -7,7 +7,7 @@ using Pkg;Pkg.add("Demultiplex")
 ```
 ## Functions
 ### demultiplex
-The "demultiplex" function takes four input arguments: "input", "input2", "bbc_tsv", and "output_dir", and an optional fifth argument "maximum_errorrate". The function reads fastq files, compares the barcode sequences to a reference file, and outputs files containing the reads that match the reference barcodes.
+The "demultiplex" function takes four input arguments: "input"(R1 sequence), "input2"(R2 sequence), "bbc_tsv", and "output_dir", as well as an optional fifth argument "maximum_errorrate". The function compares the reverse complementary stand converted barcode sequences in .tsv file  to a R1 sequences in input fastq file. It outputs files containing the R2 reads that correspond the reference barcodes.
 ```julia
 function demultiplex(input::String,input2::String,bbc_tsv::String,output_dir::String,maximum_errorrate=0.22::Float64)
 ```
@@ -31,7 +31,7 @@ function BBCSemiglobalAlignmentScore(ref::String,query::String,maximum_errorrate
 * `maximum_errorrate`: the maximum allowed rate for barcode matching.
 
 ## Usage
-Here is an example of how to use the "demultiplex" function
+Here is an example of how to use the `demultiplex()` function
 ```julia
 using Demultiplex
 
@@ -39,10 +39,19 @@ input = "path/to/input.fastq"
 input2 = "path/to/input2.fastq"
 bbc_tsv = "path/to/barcodes.tsv"
 output_dir = "path/to/output/directory"
-maximum_errorrate = 0.2
+maximum_errorrate = 0.22
 
 demultiplex(input, input2, bbc_tsv, output_dir, maximum_errorrate)
 ```
+To use the function in the terminal, install the "Demultiplex" package by running the following command first
+```
+julia -e 'using Pkg; Pkg.add("Demultiplex")'
+```
+Once installed, run the `demultiplex()` function with your desired inputs using this command:
+```
+julia -e 'using Demultiplex; demultiplex(input, input2, bbc_tsv, output_dir, maximum_errorrate)'
+```
+
 ## License
 This package is licensed under the MIT License.
 
