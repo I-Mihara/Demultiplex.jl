@@ -1,19 +1,19 @@
 module Demultiplex
 
 export
-    BBCSemiglobalAlignmentScore,
+    BCSemiglobalAlignmentScore,
     demultiplex
 
 using BioAlignments, CSV, DataFrames
 
 """
-    BBCSemiglobalAlignmentScore(ref::String,query::String,maximum_errorrate=0.22::Float64) -> score::Int64 
+    BCSemiglobalAlignmentScore(ref::String,query::String,maximum_errorrate=0.22::Float64) -> score::Int64 
 Calculate the semiglobal alignment score between a reference sequence and a query sequence
 using the Bioalignments.jl package and return score based on the number of mach, mismach and insertion.
 If the error rate between the aligned seqences is greater than the maximum allowed error rate,
 the function returns a score of 0.
 """
-function BBCSemiglobalAlignmentScore(ref::String, query::String, maximum_errorrate=0.22::Float64)
+function BCSemiglobalAlignmentScore(ref::String, query::String, maximum_errorrate=0.22::Float64)
     problem = SemiGlobalAlignment()
     scoremodel = AffineGapScoreModel(match=0, mismatch=-1, gap_open=0, gap_extend=-1)
     result = pairalign(problem, query, ref, scoremodel)
@@ -27,26 +27,26 @@ function BBCSemiglobalAlignmentScore(ref::String, query::String, maximum_errorra
 end
 
 """
-    function demultiplex(input::String,input2::String,bbc_tsv::String,output_dir::String,maximum_errorrate=0.22::Float64)
+    function demultiplex(input::String,input2::String,bc_tsv::String,output_dir::String,maximum_errorrate=0.22::Float64)
 Demultiplex reads based on barcode sequences, with the option to set a maximum error rate for matching.
 """
-function demultiplex(input::String, input2::String, bbc_tsv::String, output_dir::String, maximum_errorrate=0.22::Float64)
+function demultiplex(input::String, input2::String, bc_tsv::String, output_dir::String, maximum_errorrate=0.22::Float64)
     if isdir(output_dir)
         rm(output_dir, recursive=true)
     end
     mkdir(output_dir)
-    bbc_df = CSV.read(bbc_tsv, DataFrame, delim="\t")
-    for i in 1:nrow(bbc_df)
-    prefix_region = 1:findfirst('B', bbc_df.Full_annotation[i])-1
-    suffix_region = findlast('B', bbc_df.Full_annotation[i])+1:length(bbc_df.Full_annotation[i])
-    prefix = SubString(bbc_df.Full_seq[i], prefix_region)
-    suffix = SubString(bbc_df.Full_seq[i], suffix_region)
-    bbc_df.Full_seq[i] = replace(bbc_df.Full_seq[i], prefix => "")
-    bbc_df.Full_seq[i] = replace(bbc_df.Full_seq[i], suffix => "")
+    bc_df = CSV.read(bc_tsv, DataFrame, delim="\t")
+    for i in 1:nrow(bc_df)
+    prefix_region = 1:findfirst('B', bc_df.Full_annotation[i])-1
+    suffix_region = findlast('B', bc_df.Full_annotation[i])+1:length(bc_df.Full_annotation[i])
+    prefix = SubString(bc_df.Full_seq[i], prefix_region)
+    suffix = SubString(bc_df.Full_seq[i], suffix_region)
+    bc_df.Full_seq[i] = replace(bc_df.Full_seq[i], prefix => "")
+    bc_df.Full_seq[i] = replace(bc_df.Full_seq[i], suffix => "")
     end
-    bbc_df.Full_seq = replace.(bbc_df.Full_seq, "U" => "T")
-    bbc_df.Full_seq = reverse.(bbc_df.Full_seq)
-    bbc_df.Full_seq = replace.(bbc_df.Full_seq, "A" => "T", "T" => "A", "G" => "C", "C" => "G")
+    bc_df.Full_seq = replace.(bc_df.Full_seq, "U" => "T")
+    bc_df.Full_seq = reverse.(bc_df.Full_seq)
+    bc_df.Full_seq = replace.(bc_df.Full_seq, "A" => "T", "T" => "A", "G" => "C", "C" => "G")
     open(input, "r") do file
         mode = ""
         header = ""
@@ -63,20 +63,20 @@ function demultiplex(input::String, input2::String, bbc_tsv::String, output_dir:
                 elseif mode == "header"
                     seq = line
                     mode = "line3"
-                    maximum_bbc_score = 0
-                    maximum_bbc_score_number = 0
-                    for (i, row) in enumerate(eachrow(bbc_df))
-                        bbc_score = BBCSemiglobalAlignmentScore(seq, row.Full_seq, maximum_errorrate)
-                        if maximum_bbc_score < bbc_score
-                            maximum_bbc_score = bbc_score
-                            maximum_bbc_score_number = i
+                    maximum_bc_score = 0
+                    maximum_bc_score_number = 0
+                    for (i, row) in enumerate(eachrow(bc_df))
+                        bc_score = BCSemiglobalAlignmentScore(seq, row.Full_seq, maximum_errorrate)
+                        if maximum_bc_score < bc_score
+                            maximum_bc_score = bc_score
+                            maximum_bc_score_number = i
                         end
                     end
                     seq = R2
-                    if maximum_bbc_score_number == 0
+                    if maximum_bc_score_number == 0
                         filename = output_dir * "/trimmed-unknown.fastq"
                     else
-                        filename = output_dir * "/trimmed-" * string(bbc_df.ID[maximum_bbc_score_number]) * ".fastq"
+                        filename = output_dir * "/trimmed-" * string(bc_df.ID[maximum_bc_score_number]) * ".fastq"
                     end
                 elseif mode == "line3"
                     line3 = R2

@@ -8,7 +8,7 @@ function test_demultiplex()
 
     input = joinpath(tmpdir, "test_input.fastq")
     input2 = joinpath(tmpdir, "test_input2.fastq")
-    bbc_tsv = joinpath(tmpdir, "test_bbc.tsv")
+    bc_tsv = joinpath(tmpdir, "test_bc.tsv")
     output_dir = joinpath(tmpdir, "test_output")
 
     open(input, "w") do io
@@ -33,7 +33,7 @@ function test_demultiplex()
         println(io, "FFF:F")
     end
 
-    io = open(bbc_tsv, "w")
+    io = open(bc_tsv, "w")
     data = [
         ["ID", "Number", "Full_seq", "Full_annotation"],
         ["sample_1", 1, "AAAGGGGGGAAAT", "LLLBBBBBB3333"],
@@ -47,7 +47,7 @@ function test_demultiplex()
     close(io)
 
     # Run function
-    demultiplex(input, input2, bbc_tsv, output_dir, 0.22)
+    demultiplex(input, input2, bc_tsv, output_dir, 0.22)
 
     # Test outputsq
     @test isdir(output_dir)
@@ -69,26 +69,26 @@ function test_demultiplex()
     end
 end
 
-function test_BBCSemiglobalAlignmentScore()
+function test_BCSemiglobalAlignmentScore()
     ref = "AAAAAGGAA"
     query = "GG"
     maximum_errorrate = 0.22
 
-    score = BBCSemiglobalAlignmentScore(ref, query, maximum_errorrate)
+    score = BCSemiglobalAlignmentScore(ref, query, maximum_errorrate)
     @test score == 2
 
     ref = "TTTTGGGGCCCGAAATGTGAAATAAGGGTA"
     query = "CCCGAA"
-    score = BBCSemiglobalAlignmentScore(ref, query, maximum_errorrate)
+    score = BCSemiglobalAlignmentScore(ref, query, maximum_errorrate)
     @test score == 6
 
     ref = "TATATTCGCGGCATCCGCACTTATGCGCGAATGCATAGCCAACTGCTTGGCAGTTGGCTTCAGACCA"
     query = "AGCCAACTGCTTGGCAGTTGGC"
-    score = BBCSemiglobalAlignmentScore(ref, query, maximum_errorrate)
+    score = BCSemiglobalAlignmentScore(ref, query, maximum_errorrate)
     @test score == 22
 
     ref = "TATATTCGCGGCATCCGCACTTATGCGCGAATGCATAGCCAACTGCTTGCAGTTGGCTTCAGACCA"
-    score = BBCSemiglobalAlignmentScore(ref, query, maximum_errorrate)
+    score = BCSemiglobalAlignmentScore(ref, query, maximum_errorrate)
     @test score == 19
 end
 
@@ -97,7 +97,7 @@ end
         test_demultiplex()
     end
 
-    @testset "BBCSemiglobalAlignmentScore tests" begin
-        test_BBCSemiglobalAlignmentScore()
+    @testset "BCSemiglobalAlignmentScore tests" begin
+        test_BCSemiglobalAlignmentScore()
     end
 end
