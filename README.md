@@ -76,10 +76,10 @@ ID  Full_seq	Full_annotation
 The `execute_demultiplexing` function provides several optional parameters to control the demultiplexing process:
 
 - **`max_error_rate::Float64`** (default: `0.22`): 
-  - The maximum allowable error rate when matching sequences to barcodes. A lower value increases stringency, allowing fewer mismatches and indels.
+  - The maximum allowable error rate when matching sequences to barcodes. A lower value increases stringency, allowing fewer mismatches and indels. Sequences that exceed this error rate threshold and do not match any barcode will be saved in `unknown.fastq`.
   
 - **`min_delta::Float64`** (default: `0`): 
-  - The minimum difference in similarity scores required to classify a sequence. This helps in resolving cases where a sequence may match multiple barcodes. A larger value increases the threshold, reducing ambiguous classifications.
+  - The minimum difference in similarity scores required to classify a sequence. This helps in resolving cases where a sequence may match multiple barcodes. A larger value increases the threshold, reducing ambiguous classifications. Sequences that match multiple barcodes and do not meet this minimum difference will be saved in `ambiguous_classification.fastq`.
   
 - **`mismatch::Int`** (default: `1`): 
   - The penalty score for mismatches during sequence alignment. Increasing this value makes the alignment process more stringent by penalizing mismatches more heavily.
