@@ -36,6 +36,34 @@ If you haven't installed Julia yet, you can download it from the [official Julia
 Both methods will install `Demux.jl` and its dependencies, making it ready for use in your projects.
 
 ### Dependencies
-- Julia >= 1.10.5 (includes the `Distributed` standard library)
-- DataFrames >= 1.7.0
-- CSV >= 0.10.14
+* Julia >= 1.10.5 (includes the `Distributed` standard library)
+* DataFrames >= 1.7.0
+* CSV >= 0.10.14
+
+## Basic Usage
+
+The primary function of this package is `execute_demultiplexing()`. It can classify sequences in FASTQ file using barcodes from reference file. Usage is as follows:
+```Julia
+execute_demultiplexing(FASTQ_file, barcode_file, output_directory)
+```
+
+### Input
+
+#### FASTQ File
+* There is no restriction on the sequence length in the FASTQ file.
+* The function can take one or two FASTQ files as input. In the case of using two FASTQ files (R1 and R2), the command can be executed as follows:
+```julia
+execute_demultiplexing(FASTQ_R1, FASTQ_R2, barcode_file, output_directory)
+```
+When using two FASTQ files, sequences in the R2 file are classified by calculating similarity scores from the R1 sequences and barcodes in the reference file.
+
+#### Barcode Reference File
+* The reference file is expected to be a TSV file containing the following columns: `ID`, `Full_seq`, `Full_annotation`, as shown below:
+```
+ID  Full_seq	Full_annotation
+001-barcode ACAGACUACAAA LLLBBBBBBB33
+```
+In the `Full_seq` column, the region specified as `B` in the `Full_annotation` column is considerd as the barcode.
+
+### Output
+
