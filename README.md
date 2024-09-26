@@ -6,7 +6,7 @@ Demux.jl is a Julia package designed for demultiplexing reads based on barcodes.
 ### Program features
 * Fast and accurate semi-global alignment
 * Robust to barcode mutations
-* No restriction s on barcode size or position
+* No restrictions on barcode size or position
 * Usable as julia package
 * Supports parallel computing
 
@@ -35,3 +35,7 @@ If you haven't installed Julia yet, you can download it from the [official Julia
 
 Both methods will install `Demux.jl` and its dependencies, making it ready for use in your projects.
 
+### Dependencies
+- Julia >= 1.10.5 (includes the `Distributed` standard library)
+- DataFrames >= 1.7.0
+- CSV >= 0.10.14
