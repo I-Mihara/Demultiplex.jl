@@ -10,9 +10,6 @@ Demux.jl is a Julia package designed for demultiplexing reads based on barcodes.
 * Usable as julia package
 * Supports parallel computing
 
-### References
-To be published.
-
 ## Table of Contents
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
